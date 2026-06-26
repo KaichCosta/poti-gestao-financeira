@@ -1,0 +1,56 @@
+datasource db {
+  provider = "mysql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Usuario {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  senha     String   // Armazenaremos o hash via bcrypt
+  tipoConta String   @default("gratis") // 'gratis' ou 'pro'
+  criadoEm  DateTime@default(now())
+
+  // Relacionamentos (1:1 com Configuração, 1:N com Transações)
+  configuracao ConfiguracaoOrcamento?
+  transacoes   Transacao[]
+
+  @@map("usuarios")
+}
+
+model ConfiguracaoOrcamento {
+  id                     String   @id @default(uuid())
+  usuarioId              String   @unique @map("usuario_id")
+  receitaMensal          Decimal  @db.Decimal(10, 2)
+  porcentagemFixos       Int      @default(50)
+  porcentagemNaoEssenc   Int      @default(30)
+  porcentagemInvest      Int      @default(20)
+  diaResetOrcamento      Int      @default(1) // Dia do mês em que o orçamento zera
+  atualizadoEm           DateTime @updatedAt @map("atualizado_em")
+
+  // Chave estrangeira com deleção em cascata (Se o user deletar a conta, limpa as configs)
+  usuario                Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("configuracoes_orcamento")
+}
+
+model Transacao {
+  id              String   @id @default(uuid())
+  usuarioId       String   @map("usuario_id")
+  descricao       String
+  valor           Decimal  @db.Decimal(10, 2)
+  data            DateTime @default(now())
+  metodoPagamento String   @map("metodo_pagamento") // 'Pix', 'Credito', 'Debito', 'Dinheiro'
+  tipoGasto       String   @map("tipo_gasto")       // 'Fixo', 'Nao Essencial', 'Investimento'
+  criadoEm        DateTime @default(now()) @map("criado_em")
+
+  // Relacionamento
+  usuario         Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  // CRÍTICO PARA PERFORMANCE (Multi-tenancy & Filtros da Sprint 4)
+  // O MySQL fará buscas instantâneas combinando o ID do usuário com os filtros de histórico
+  @@index([usuarioId, data, tipoGasto, metodoPagamento])
+  @@map("transacoes")
+}

@@ -1,7 +1,6 @@
-const { defineConfig } = require('@prisma/config');
+require('dotenv').config();
 
-// Se o process.env.DATABASE_URL não estiver carregado, 
-// tentamos ler o .env local diretamente para o CLI do Prisma não quebrar.
+// Tratamento preventivo caso o process.env não suba de primeira
 if (!process.env.DATABASE_URL) {
   try {
     const fs = require('fs');
@@ -25,8 +24,9 @@ if (!process.env.DATABASE_URL) {
   }
 }
 
-module.exports = defineConfig({
+// No Prisma 7+ com CommonJS, exportamos o objeto bruto sem o wrapper do defineConfig
+module.exports = {
   datasource: {
     url: process.env.DATABASE_URL,
   },
-});
+};

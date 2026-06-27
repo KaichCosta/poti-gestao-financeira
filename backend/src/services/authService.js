@@ -1,8 +1,10 @@
-const { PrismaClient} = require('@prisma/client')
-const bcrypt = require('bcryptjs')
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
 
-// Instancia o PrismaClient. Ele automaticamente usará a DATABASE_URL do .env
-const prisma = new PrismaClient();
+// Buscamos as configurações que definimos no arquivo centralizado do Prisma
+const prismaConfig = require('../../prisma.config.js');
+
+const prisma = new PrismaClient()
 
 async function criarUsuario(email, senha) {
     const usuarioExistente = await prisma.usuario.findUnique({where: {email}

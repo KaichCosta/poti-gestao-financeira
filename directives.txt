@@ -1,0 +1,98 @@
+===============================================================================
+                       POTI APP GESTÃO - DIRETRIZES DO MVP
+===============================================================================
+
+1. VISÃO GERAL DO PRODUTO E OBJETIVO
+-------------------------------------------------------------------------------
+Nome do Produto: Poti [cite: 226, 254]
+Objetivo: Uma aplicação web mobile-first de gestão financeira baseada no "Método 
+dos Potes"[cite: 32, 133]. O foco é eliminar a fricção diária de preenchimento, 
+entregando respostas visuais ultra-rápidas sobre o orçamento[cite: 30, 109].
+Filosofia: "Sobrou dinheiro? Poti guardar!"[cite: 254]. Layout limpo, poucos cliques, 
+alimentação inteligente e foco total na experiência do usuário final[cite: 111, 115, 131].
+
+2. ESCOPO DO MVP (O QUE DEVE SER FEITO)
+-------------------------------------------------------------------------------
+Para garantir a entrega em 4 semanas (conforme o planejamento ágil)[cite: 224, 286], a 
+versão 1.0 conterá estritamente:
+
+* Autenticação e Multi-tenancy:
+  - Cadastro e login de usuários via JWT seguro (Node.js + bcrypt)[cite: 165].
+  - Arquitetura de banco de dados isolada por ID de usuário (Multi-tenancy nativo 
+    no MySQL) para viabilizar o modelo SaaS futuramente[cite: 25, 157, 267, 268].
+
+* Onboarding Inicial (Primeiro Acesso):
+  - Coleta da receita mensal (salário/ganhos)[cite: 161, 169].
+  - Definição dos limites percentuais dos 3 potes (Padrão sugerido: 50% Fixos, 
+    30% Não Essenciais, 20% Investimentos)[cite: 32, 170, 171].
+  - Dia de início/reset do orçamento mensal[cite: 172, 173].
+
+* Dashboard Visual "Três Potes" (Mobile-First):
+  - Três grandes barras de progresso dinâmicas que mudam de cor (Verde, Amarelo 
+    e Vermelho) baseadas no teto restante de cada pote[cite: 33, 137, 138].
+  - Resumo de saldo rápido no topo da tela[cite: 139].
+
+* Lançamento Inteligente de Despesas:
+  - Input rápido contendo: Data (auto-preenchida com o dia atual)[cite: 113, 140], 
+    Descrição, Valor, Método de Pagamento (Pix, Crédito, Débito, Dinheiro) [cite: 68, 142] 
+    e Tipo de Gasto (Fixo, Não Essencial, Investimento)[cite: 68].
+  - Seleção de categorias via botões de clique rápido (Chips/Badges)[cite: 115, 141].
+
+* Histórico Simplificado com Filtros:
+  - Lista corrida dos gastos do mês atual[cite: 143].
+  - Filtros dinâmicos indexados (cláusulas WHERE no MySQL) por Data, Método de 
+    Pagamento e Tipo de Gasto[cite: 54, 70, 274].
+
+* Estratégia de Monetização Embutida (Modelo Freemium):
+  - Trava de volume no backend: limitação de até 30 lançamentos por mês na 
+    versão gratuita[cite: 91, 144].
+  - Bloqueio via Node.js com exibição de modal de conversão para a versão PRO 
+    ao atingir o limite[cite: 105, 106].
+
+3. FORA DO ESCOPO DO MVP (O QUE NÃO DEVE SER FEITO AGORA)
+-------------------------------------------------------------------------------
+As seguintes funcionalidades serão enviadas diretamente para a coluna "Backlog 
+(Futuro)" do Kanban para evitar o Escopo Rasteiro (Scope Creep)[cite: 194, 220, 222, 282, 284]:
+
+4. DIRETRIZES DE DESENVOLVIMENTO PARA A IA (CONTEXTO PARA O GEMINI)
+-------------------------------------------------------------------------------
+Ao gerar código, arquitetura ou sugestões para o Poti, a IA deve seguir 
+rigorosamente as seguintes instruções:
+
+* Stack Tecnológico Homologado:
+  - Frontend: React (SPA limpa, priorizando hooks nativos).
+  - Estilização: Styled Components (Mobile-First nativo, uso de temas globais 
+    para cores de potes/alertas).
+  - Backend: Node.js (Express ou framework similar).
+  - Banco de Dados: MySQL (Queries preparadas e relacionamentos explícitos).
+
+* Modularidade e Clean Code:
+  - Todo código fornecido deve ser modular, desacoplado e limpo.
+  - No React: Separação clara entre componentes de UI estruturais, estilos 
+    (styled.js) e lógica de estado/hooks.
+  - No Node.js: Arquitetura em camadas (Routes, Controllers, Services/Models). 
+    Evite arquivos gigantes com múltiplas responsabilidades.
+
+* Foco nas Linhas Específicas:
+  - Quando solicitada uma alteração ou correção de bug, altere apenas as linhas 
+    necessárias ou o bloco problemático. 
+  - Não reescreva componentes inteiros ou arquivos de rotas desnecessariamente.
+
+* Nível Sênior (Performance e Escala):
+  - Sugira soluções pensando em escalabilidade de código, legibilidade e 
+    performance de queries no MySQL.
+  - Obrigatório o uso de índices corretos nas chaves estrangeiras (`usuario_id`) 
+    para garantir buscas rápidas na tabela de transações compartilhada 
+    (Multi-tenancy).
+
+* Bloqueio Crítico de Funcionalidades (Garantia do MVP):
+  - Se o usuário (desenvolvedor) pedir para implementar algo fora do escopo do 
+    MVP detalhado na Seção 2, a IA deve alertar criticamente sobre o risco de 
+    perda de foco ("Scope Creep") antes de fornecer qualquer código.
+
+* Integração automática com bancos ou leitura de extratos (.OFX/.CSV)[cite: 12].
+* Leitura de QR Code de Notas Fiscais (NFC-e) ou automação de Pix copia-e-cola[cite: 126, 128].
+* Automação de gastos recorrentes (Cron jobs de assinaturas mensais)[cite: 124, 151].
+* Lógicas complexas de cartões de crédito (faturas cruzadas para o mês seguinte)[cite: 96, 154, 155].
+* Compartilhamento de contas (contas conjuntas para casais ou repúblicas)[cite: 42, 97].
+* Exportação de dados e relatórios avançados em PDF ou Excel[cite: 9, 95, 156].

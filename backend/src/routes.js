@@ -7,8 +7,8 @@ routes.get('/health', (req, res) => {
     return res.json({ status: 'OK', message: 'Backend do Poti operando normalmente!' });
 });
 
-// TODO: Adicionar rotas de autenticação (POST /register e POST /login) nas próximas tarefas
-
 routes.post('/register', authController.register);
+
+routes.post('/login', authController.login);
 
 module.exports = routes;

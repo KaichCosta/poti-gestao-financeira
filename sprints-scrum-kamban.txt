@@ -1,0 +1,90 @@
+📅 1. O Ritmo: "Sprints" Semanais (Do Scrum)
+
+Mesmo trabalhando sozinho, defina ciclos de 1 semana de desenvolvimento.
+
+    Todo domingo/segunda: Você olha para o seu Backlog (lista de tarefas), escolhe o que realmente consegue entregar naquela semana e puxa para a Sprint.
+
+    Todo sábado: Você fecha a Sprint. O código escolhido tem que estar pronto, testado e funcionando. Se não terminou, vai para a próxima semana (sem neura, mas serve de aprendizado sobre o seu ritmo).
+
+📋 2. O Quadro Visual (Kanban)
+
+Você pode usar o Trello, Notion ou GitHub Projects. Seu quadro terá 5 colunas básicas:
+
+    Backlog (Idéias/Futuro): Tudo o que o SaaS vai ter um dia (as ideias da versão PRO, relatórios, etc.).
+
+    A Fazer (Sprint Atual): As tarefas específicas que você se comprometeu a fazer esta semana.
+
+    Em Andamento (Doing): Regra de Ouro do Kanban: Limite o seu WIP (Work in Progress). Só tenha uma tarefa aqui por vez. Não comece o Front-end se o banco de dados daquela rota não estiver pronto. Foco total em terminar o que começou.
+
+    Em Teste / Code Review: Onde você testa no navegador e no celular para ver se não quebrou nada.
+
+    Pronto (Done): Tarefa concluída e integrada ao projeto principal.
+
+🛠️ 3. O Fatiamento do Projeto (As Sprints na Prática)
+
+Para não se perder criando telas sem backend ou banco sem conexão, fatie o projeto por funcionalidades verticais (User Stories). Cada Sprint deve entregar algo que você consiga abrir no navegador e ver funcionar.
+
+Aqui está um roadmap sugerido de 4 Sprints (1 mês de desenvolvimento para o MVP):
+Sprint 1: A Fundação (Banco e Autenticação)
+
+    Objetivo: Conseguir criar uma conta e fazer login.
+
+    Tarefas no Kanban:
+
+        Criar o banco de dados MySQL local (Tabelas usuarios e orcamentos_config).
+
+        Criar o servidor Node.js com Express.
+
+        Desenvolver a rota de cadastro (POST /register) com criptografia de senha (bcrypt).
+
+        Desenvolver a rota de login (POST /login) gerando o Token JWT.
+
+        Criar as telas de HTML/CSS de Login e Cadastro (Mobile-First).
+
+Sprint 2: O Onboarding (Configuração Inicial)
+
+    Objetivo: O usuário faz login, preenche o salário e define as metas dos potes.
+
+    Tarefas no Kanban:
+
+        Desenvolver a rota de salvar configuração (POST /configuracao) protegida por JWT.
+
+        Criar a tela de Onboarding em HTML/CSS com o formulário (Salário, % dos potes, dia de reset).
+
+        Fazer o JavaScript (Fetch API) enviar os dados da tela para o backend.
+
+Sprint 3: O Core do Negócio (Dashboard e Lançamento)
+
+    Objetivo: Ver as barras de progresso mudando de tamanho e cor ao cadastrar um gasto.
+
+    Tarefas no Kanban:
+
+        Criar a tabela de transacoes no MySQL.
+
+        Desenvolver a rota para lançar gasto (POST /transacoes).
+
+        Desenvolver a rota do dashboard (GET /dashboard) que faz o cálculo matemático dos potes e retorna o saldo restante.
+
+        Criar a interface do Dashboard com as 3 barras em CSS (usando variáveis para as cores verde/amarelo/vermelho).
+
+        Implementar o formulário de clique rápido (Chips) para lançar novos gastos.
+
+Sprint 4: Histórico e Filtros (Fechamento do MVP)
+
+    Objetivo: Ver a lista de gastos antigos e conseguir filtrar por método de pagamento ou tipo.
+
+    Tarefas no Kanban:
+
+        Desenvolver a rota de listagem com filtros dinâmicos no Node (GET /transacoes?tipo=...&metodo=...).
+
+        Criar a seção de histórico no front-end logo abaixo do dashboard.
+
+        Implementar o modal ou menu colapsável de filtros no layout mobile.
+
+🧠 Dica de Mestre de TI
+
+O maior inimigo do desenvolvedor em metodologias ágeis é o "Escopo Rasteiro" (Scope Creep). Durante a Sprint 3, você vai ter uma ideia incrível: "E se eu colocar um gráfico de linha aqui?".
+
+Não faça isso na mesma hora. Escreva a ideia em um card e jogue lá na coluna Backlog (Futuro). Mantenha o foco em terminar a Sprint atual. O Kanban serve exatamente para acalmar a sua mente e te mostrar que aquela ideia não foi esquecida, ela só está esperando o momento certo de ser desenvolvida.
+
+Se você seguir esse fluxo, em 4 semanas você tem um sistema rodando, pronto para ser testado com usuários reais.

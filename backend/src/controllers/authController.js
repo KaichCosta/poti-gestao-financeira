@@ -29,4 +29,28 @@ async function register(req, res) {
     }
 }
 
-module.exports = {register};
+async function login(req, res) {
+    try {
+        const { email, senha } = req.body;
+        
+        if (!email || !senha) {
+            return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+        }
+        
+        const dadosAutenticados = await authService.autenticarUsuario(email, senha);
+
+        return res.status(200).json(dadosAutenticados)
+    } catch (error) {
+        if (error.message === 'INVALID_CREDENTIALS') {
+            return res.status(401).json({ error: 'E-mail ou senha incorretos.' });
+        }
+
+        console.error('Erro no login:', error);
+        return res.status(500).json({ error: 'Erro interno do servidor ao realizar login.' });
+    }
+}
+
+module.exports = {
+    register,
+    login
+};

@@ -1,14 +1,29 @@
 import React, { useState } from "react";
 import { Mail, Lock, LogIn } from "lucide-react";
 import * as C from "./styles";
+import { post } from '../../services/api';
 
-export default function Login() {
+export default function Login({ irParaCadastro }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState('');
 
-  const lidarComLogin = (e) => {
+  const lidarComLogin = async(e) => {
     e.preventDefault();
-    console.log("Tentativa de login capturada no front:", { email, senha });
+    setErro('');
+    try {
+      // Dispara o POST real para o backend na rota /register
+      const resposta = await post('/login', { email, senha });
+      
+      localStorage.setItem('@Poti:token', resposta.token);
+      localStorage.setItem('@Poti:usuario', JSON.stringify(resposta.usuario));
+
+      alert(`Bem-vindo, ${resposta.usuario.email}! Login efetuado.`)
+      // TODO: Redirecionar para o Dashboard futuramente
+    } catch (err) {
+      // Exibe na tela a mensagem que veio lá do Express (Ex: "Este e-mail já está cadastrado")
+      setErro(err.message);
+    }
   };
 
   return (
@@ -53,7 +68,7 @@ export default function Login() {
         </C.Formulario>
 
         <C.LinkAlternativo>
-          Não tem uma conta? <span>Cadastrar-se</span>
+          Não tem uma conta? <span onClick={irParaCadastro}>Cadastrar-se</span>
         </C.LinkAlternativo>
 
       </C.CardLogin>

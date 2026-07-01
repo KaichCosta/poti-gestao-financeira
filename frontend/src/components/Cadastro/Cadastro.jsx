@@ -1,14 +1,23 @@
 import React, { useState} from 'react';
 import { Mail, Lock, ArrowRight} from 'lucide-react';
 import * as C from './styles'
+import { post } from '../../services/api';
 
-export default function Cadastro() {
+export default function Cadastro({ irParaLogin }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [erro, setErro] = useState('');
 
-  const lidarComCadastro = (e) => {
+  const lidarComCadastro = async (e) => {
     e.preventDefault();
-    console.log('Dados enviados:', { email, senha });
+    setErro('');
+    try {
+      const resposta = await post('/register', {email, senha});
+      alert(resposta.message || 'Conta criada com sucesso!');
+      irParaLogin();
+    } catch (err){
+      setErro(err.message);
+    }
   };
   return (
     <C.TelaContainer>
@@ -53,7 +62,7 @@ export default function Cadastro() {
         </C.Formulario>
 
         <C.LinkAlternativo>
-          Já tem uma conta? <span>Entrar</span>
+          Já tem uma conta? <span onClick={() => irParaLogin()}>Entrar</span>
         </C.LinkAlternativo>
       </C.CardCadastro>
     </C.TelaContainer>

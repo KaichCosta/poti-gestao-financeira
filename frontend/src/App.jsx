@@ -5,7 +5,7 @@ import Cadastro from "./components/Cadastro/Cadastro";
 function App() {
   const[telaAtiva, setTelaAtiva] = useState('login')
 
-  if (telaAtiva === 'login') {
+  if (telaAtiva === 'cadastro') {
     return <Cadastro irParaLogin={() => setTelaAtiva('login')} />
   }
   

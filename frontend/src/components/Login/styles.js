@@ -16,7 +16,7 @@ export const CardLogin = styled.div`
   width: 100%;
   max-width: 400px;
   box-shadow: 0 10px 25px
-   rgba(4, 38, 30, 0.05);
+  rgba(4, 38, 30, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;

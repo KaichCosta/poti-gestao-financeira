@@ -3,7 +3,7 @@ import { Mail, Lock, LogIn } from "lucide-react";
 import * as C from "./styles";
 import { post } from '../../services/api';
 
-export default function Login({ irParaCadastro }) {
+export default function Login({ irParaCadastro, logadoComSucesso }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState('');
@@ -12,17 +12,22 @@ export default function Login({ irParaCadastro }) {
     e.preventDefault();
     setErro('');
     try {
-      // Dispara o POST real para o backend na rota /register
-      const resposta = await post('/login', { email, senha });
+      // 2. Usando a sua função 'post' injetada do seu service/api de forma limpa:
+      const resposta = await post('/login', { email, senha });   
       
+      // 3. No seu service estruturado, a resposta já costuma devolver os dados direto (.data)
       localStorage.setItem('@Poti:token', resposta.token);
       localStorage.setItem('@Poti:usuario', JSON.stringify(resposta.usuario));
 
-      alert(`Bem-vindo, ${resposta.usuario.email}! Login efetuado.`)
-      // TODO: Redirecionar para o Dashboard futuramente
+      alert(`Bem-vindo, ${resposta.usuario.email}! Login efetuado.`);
+      
+      // 4. Dispara a mudança de estado para o App.js abrir o Onboarding
+      if (logadoComSucesso) {
+        logadoComSucesso();
+      }
     } catch (err) {
-      // Exibe na tela a mensagem que veio lá do Express (Ex: "Este e-mail já está cadastrado")
-      setErro(err.message);
+      // Pega a mensagem tratada do backend ou o fallback de erro de rede
+      setErro(err.response?.data?.erro || err.message);
     }
   };
 

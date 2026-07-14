@@ -1,10 +1,12 @@
 const { Router } = require('express');
 const authController = require('./controllers/authController');
-const routes = Router();
-
 const configuracaoController = require('./controllers/configuracaoController');
+const transacaoController = require('./controllers/transacaoController');
+
 const verificarJWT = require('./middlewares/authMiddleware');
-// Precisa ser um objeto exportado ou a função direta
+const validaLimiteFreemium = require('./middlewares/validaLimiteFreemium');
+
+const routes = Router();
 
 // Rota de teste para garantir que o Express está vivo
 routes.get('/health', (req, res) => {
@@ -16,5 +18,7 @@ routes.post('/register', authController.register);
 routes.post('/login', authController.login);
 
 routes.post('/configuracao', verificarJWT, configuracaoController.salvar);
+
+routes.post('/transacoes', verificarJWT, validaLimiteFreemium, transacaoController.criar);
 
 module.exports = routes;

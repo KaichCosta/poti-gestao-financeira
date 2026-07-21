@@ -1,6 +1,6 @@
-import * as transacaoService from '../services/transacaoService.js';
+const transacaoService = require('../services/transacaoService');
 
-export async function store(req, res) {
+async function criar(req, res) {
   try {
     const usuarioId = req.usuarioId; // Injetado pelo middleware de autenticação
     const { descricao, valor, data, metodo_pagamento, tipo_gasto } = req.body;
@@ -40,3 +40,7 @@ export async function store(req, res) {
     return res.status(500).json({ error: 'Erro ao registrar despesa.' });
   }
 }
+
+module.exports = {
+  criar
+};

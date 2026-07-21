@@ -37,8 +37,9 @@ export function Onboarding() {
       });
       alert('Configurações ativadas com sucesso! 🫙');
 
-      // Aqui você pode mudar o estado no seu App.js ou dar o reload para ir para o Dashboard
-      window.location.reload();
+      if (irParaDashboard) {
+        irParaDashboard();
+      }
     } catch (error) {
       alert(error.response?.data?.erro || 'Erro interno ao salvar suas configurações.');
     } finally {

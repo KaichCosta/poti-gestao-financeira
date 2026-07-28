@@ -5,6 +5,7 @@ const transacaoController = require('./controllers/transacaoController');
 
 const verificarJWT = require('./middlewares/authMiddleware');
 const validaLimiteFreemium = require('./middlewares/validaLimiteFreemium');
+const dashboardController = require('./controllers/dashboardController');
 
 const routes = Router();
 
@@ -20,5 +21,7 @@ routes.post('/login', authController.login);
 routes.post('/configuracao', verificarJWT, configuracaoController.salvar);
 
 routes.post('/transacoes', verificarJWT, validaLimiteFreemium, transacaoController.criar);
+
+routes.get('/dashboard', verificarJWT, dashboardController.obterDashboard)
 
 module.exports = routes;

@@ -4,22 +4,62 @@ import Cadastro from "./components/Cadastro/Cadastro";
 import { Onboarding } from './components/Onboarding/Onboarding';
 import DashboardPotes from './components/Dashboard/DashboardPotes';
 import FormularioLancamento from './components/FormularioLancamento/FormularioLancamento';
+import { get } from './services/api';
+
 
 function App() {
+  // O estado inicial agora é 'carregando' para evitar piscar a tela de login no F5
   const[telaAtiva, setTelaAtiva] = useState('login')
+  // Estados vazios que serão preenchidos pelo MySQL
+  const [configuracao, setConfiguracao] = useState({});
 
-  const [configuracao] = useState({
-    receitaMensal: 3000,
-    porcentagemFixos: 50,
-    porcentagemNaoEssenc: 30,
-    porcentagemInvest: 20
-  });
+  const [gastos, setGastos] = useState({});
 
-  const [gastos, setGastos] = useState({
-    Fixo: 0,
-    "Não Essencial": 0,
-    Investimento: 0
-  });
+  const carregarDadosUsuario = async () => {
+    const token = localStorage.getItem('@Poti:token'); // Pega o token que você salvou no Login
+
+    if (!token) {
+      setTelaAtiva('login');
+      return;
+    }
+
+    try {
+      // Chama a rota Sênior com GROUP BY que criamos no backend
+      const resposta = await get('/dashboard');
+
+      // Se a API retornou configuração, o usuário já fez o Onboarding
+      if (resposta && resposta.configuracao) {
+        setConfiguracao(resposta.configuracao);
+        setGastos(resposta.gastos || {});
+        setTelaAtiva('dashboard');
+      } else {
+        // Se tem token mas a config voltou vazia, manda pro Onboarding
+        setTelaAtiva('onboarding');
+      }
+    } catch (error) {
+      console.error("Erro ao buscar dados do dashboard:", error);
+      // Se o token estiver expirado ou inválido, limpa e manda logar de novo
+      localStorage.removeItem('@Poti:token');
+      setTelaAtiva('login');
+    }
+  };
+
+  React.useEffect(() => {
+    carregarDadosUsuario();
+  }, []);
+
+  //useEffect(() => {
+  //  carregarDadosUsuario();
+  //}, []);
+
+  // 1. TELA DE CARREGAMENTO (Splash Screen)
+  if (telaAtiva === 'carregando') {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#E0FFEC', color: '#04261E', fontWeight: 'bold' }}>
+        <p>Carregando seu Poti... 🫙</p>
+      </div>
+    );
+  }
 
   if (telaAtiva === 'cadastro') {
     return <Cadastro irParaLogin={() => setTelaAtiva('login')} />
@@ -48,7 +88,7 @@ function App() {
   return (
     <Login
       irParaCadastro={() => setTelaAtiva('cadastro')}
-      logadoComSucesso={() => setTelaAtiva('onboarding')}
+      logadoComSucesso={carregarDadosUsuario}
     />
   );
 };

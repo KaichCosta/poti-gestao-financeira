@@ -30,3 +30,32 @@ export async function post(endpoint, dados) {
 
     return resultado;
 }
+
+export async function get(endpoint) {
+    // Busca o token guardado no navegador
+    const token = localStorage.getItem('@Poti:token');
+
+    // Monta os cabeçalhos padrões da requisição
+    const cabeçalhos = {
+        'Content-Type': 'application/json'
+    };
+
+    // O "Pulo do Gato": Injeta o token automaticamente no GET também!
+    if (token) {
+        cabeçalhos['Authorization'] = `Bearer ${token}`;
+    }
+
+    const resposta = await fetch(`${API_URL}${endpoint}`, {
+        method: 'GET', // Alterado para GET
+        headers: cabeçalhos
+        // Atenção: GET nunca envia 'body'
+    });
+
+    const resultado = await resposta.json();
+
+    if (!resposta.ok) {
+        throw new Error(resultado.erro || resultado.error || 'Erro na requisição GET.');
+    }
+
+    return resultado;
+}

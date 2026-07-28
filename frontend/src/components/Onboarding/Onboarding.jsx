@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { post } from '../../services/api';
 import * as C from './styles';
 
-export function Onboarding() {
+export function Onboarding({ irParaDashboard }) {
   const [passo, setPasso] = useState(1);
   const [receitaMensal, setReceitaMensal] = useState('');
   const [porcentagemFixos, setPorcentagemFixos] = useState(50);

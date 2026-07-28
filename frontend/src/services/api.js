@@ -1,6 +1,6 @@
 const API_URL = 'http://localhost:3000/api';
 
-// Função utilitária sênior para centralizar as requisições POST do app.
+// Função utilitária para centralizar as requisições POST do app.
 export async function post(endpoint, dados) {
     // Busca o token guardado no navegador no momento do login
     const token = localStorage.getItem('@Poti:token');
@@ -46,9 +46,9 @@ export async function get(endpoint) {
     }
 
     const resposta = await fetch(`${API_URL}${endpoint}`, {
-        method: 'GET', // Alterado para GET
+        method: 'GET',
         headers: cabeçalhos
-        // Atenção: GET nunca envia 'body'
+
     });
 
     const resultado = await resposta.json();

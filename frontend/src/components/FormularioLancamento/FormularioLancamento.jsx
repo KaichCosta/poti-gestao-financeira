@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as S from './styles';
+import { post } from '../../services/api';
 
 export default function FormularioLancamento({ onSubmitExito, onErroFreemium }) {
   const [descricao, setDescricao] = useState('');
@@ -23,40 +24,28 @@ export default function FormularioLancamento({ onSubmitExito, onErroFreemium }) 
       descricao,
       valor: parseFloat(valor),
       data,
-      metodo_pagamento: metodoPagamento,
-      tipo_gasto: tipoGasto
+      metodoPagamento: metodoPagamento,
+      tipoGasto: tipoGasto
     };
 
     try {
-      const response = await fetch('/api/transacoes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Certifica de enviar JWT
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const dataJson = await response.json();
-
-      if (response.status === 403 && dataJson.error === 'limite_atingido') {
-        // Envia para o handler do componente pai exibir o Modal de Upgrade para o plano PRO
-        onErroFreemium(dataJson.message);
-        return;
-      }
-
-      if (!response.ok) {
-        throw new Error(dataJson.error || 'Erro desconhecido');
-      }
+      const dataJson = await post('/transacoes', payload);
 
       // Sucesso no cadastro
-      alert(dataJson.message);
+      alert(dataJson.message || 'Lançamento salvo com sucesso!');
       setDescricao('');
       setValor('');
+      
+      // Essa função avisa o App.jsx para recarregar o Dashboard e encher a barrinha!
       if (onSubmitExito) onSubmitExito();
 
     } catch (err) {
-      alert(err.message || 'Houve um erro ao salvar o lançamento.');
+      // Captura o erro da nossa Trava Freemium ou qualquer outro erro da API
+      if (err.message === 'limite_atingido') {
+        onErroFreemium('Você atingiu o limite de 30 lançamentos gratuitos deste mês. Desbloqueie lançamentos ilimitados no plano PRO!');
+      } else {
+        alert(err.message || 'Houve um erro ao salvar o lançamento.');
+      }
     }
   };
 

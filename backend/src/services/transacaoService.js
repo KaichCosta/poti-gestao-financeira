@@ -5,14 +5,14 @@ const prisma = new PrismaClient();
     const valorDecimal = parseFloat(valor);
     const dataFormatada = data ? new Date(data) : new Date();
 
-    return await prisma.transacoes.create({
+    return await prisma.transacao.create({
       data: {
-        usuario_id: usuarioId,
+        usuarioId: usuarioId,
         descricao,
         valor: valorDecimal,
         data: dataFormatada,
-        metodo_pagamento: metodoPagamento,
-        tipo_gasto: tipoGasto
+        metodoPagamento: metodoPagamento,
+        tipoGasto: tipoGasto
       }
   });
 }

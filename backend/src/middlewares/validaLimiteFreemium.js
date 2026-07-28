@@ -30,9 +30,9 @@ async function validaLimiteFreemium(req, res, next) {
       999,
     );
 
-    const totalTransacoesMes = await prisma.transacoes.count({
+    const totalTransacoesMes = await prisma.transacao.count({
       where: {
-        usuario_id: usuarioId,
+        usuarioId: usuarioId,
         data: {
           gte: primeiroDiaMes,
           lte: ultimoDiaMes,

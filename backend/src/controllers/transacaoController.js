@@ -3,22 +3,22 @@ const transacaoService = require('../services/transacaoService');
 async function criar(req, res) {
   try {
     const usuarioId = req.usuarioId; // Injetado pelo middleware de autenticação
-    const { descricao, valor, data, metodo_pagamento, tipo_gasto } = req.body;
+    const { descricao, valor, data, metodoPagamento, tipoGasto } = req.body;
 
     // Validação de dados de entrada simples
-    if (!descricao || !valor || !metodo_pagamento || !tipo_gasto) {
+    if (!descricao || !valor || !metodoPagamento || !tipoGasto) {
       return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos.' });
     }
 
     // Validação de Tipos de Gasto permitidos
     const tiposPermitidos = ['Fixo', 'Não Essencial', 'Investimento'];
-    if (!tiposPermitidos.includes(tipo_gasto)) {
+    if (!tiposPermitidos.includes(tipoGasto)) {
       return res.status(400).json({ error: 'Tipo de gasto inválido.' });
     }
 
     // Validação de Métodos de Pagamento permitidos
     const metodosPermitidos = ['Pix', 'Crédito', 'Débito', 'Dinheiro'];
-    if (!metodosPermitidos.includes(metodo_pagamento)) {
+    if (!metodosPermitidos.includes(metodoPagamento)) {
       return res.status(400).json({ error: 'Método de pagamento inválido.' });
     }
 
@@ -27,8 +27,8 @@ async function criar(req, res) {
       descricao,
       valor,
       data,
-      metodoPagamento: metodo_pagamento,
-      tipoGasto: tipo_gasto
+      metodoPagamento: metodoPagamento,
+      tipoGasto: tipoGasto
     });
 
     return res.status(201).json({

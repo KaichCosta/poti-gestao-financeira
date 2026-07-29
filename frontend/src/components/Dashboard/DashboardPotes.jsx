@@ -2,9 +2,6 @@ import React from 'react';
 import * as S from './styles';
 
 export default function DashboardPotes({ configuracao, gastos }) {
-  // Exemplo de dados vindos da API:
-  // configuracao = { receitaMensal: 3000, porcentagemFixos: 50, porcentagemNaoEssenc: 30, porcentagemInvest: 20 }
-  // gastos = { Fixo: 1200, "Não Essencial": 450, Investimento: 100 }
 
   const receita = Number(configuracao.receitaMensal || 0);
 
@@ -46,9 +43,9 @@ export default function DashboardPotes({ configuracao, gastos }) {
           </span>
         </S.PoteHeader>
         <S.ProgressBarContainer>
-          <S.ProgressBarFill percent={pctFixos} />
+          <S.ProgressBarFill $percent={pctFixos} />
         </S.ProgressBarContainer>
-        <S.PercentLabel percent={pctFixos}>{pctFixos.toFixed(0)}% consumido</S.PercentLabel>
+        <S.PercentLabel $percent={pctFixos}>{pctFixos.toFixed(0)}% consumido</S.PercentLabel>
       </S.PoteCard>
 
       {/* Pote 2: Não Essenciais */}
@@ -60,9 +57,9 @@ export default function DashboardPotes({ configuracao, gastos }) {
           </span>
         </S.PoteHeader>
         <S.ProgressBarContainer>
-          <S.ProgressBarFill percent={pctNaoEssenc} />
+          <S.ProgressBarFill $percent={pctNaoEssenc} />
         </S.ProgressBarContainer>
-        <S.PercentLabel percent={pctNaoEssenc}>{pctNaoEssenc.toFixed(0)}% consumido</S.PercentLabel>
+        <S.PercentLabel $percent={pctNaoEssenc}>{pctNaoEssenc.toFixed(0)}% consumido</S.PercentLabel>
       </S.PoteCard>
 
       {/* Pote 3: Investimentos */}
@@ -74,9 +71,9 @@ export default function DashboardPotes({ configuracao, gastos }) {
           </span>
         </S.PoteHeader>
         <S.ProgressBarContainer>
-          <S.ProgressBarFill percent={pctInvest} />
+          <S.ProgressBarFill $percent={pctInvest} />
         </S.ProgressBarContainer>
-        <S.PercentLabel percent={pctInvest}>{pctInvest.toFixed(0)}% consumido</S.PercentLabel>
+        <S.PercentLabel $percent={pctInvest}>{pctInvest.toFixed(0)}% consumido</S.PercentLabel>
       </S.PoteCard>
     </S.DashboardContainer>
   );

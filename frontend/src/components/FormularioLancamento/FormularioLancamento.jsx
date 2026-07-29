@@ -88,7 +88,7 @@ export default function FormularioLancamento({ onSubmitExito, onErroFreemium }) 
             <S.Chip
               key={metodo}
               type="button"
-              active={metodoPagamento === metodo}
+              $active={metodoPagamento === metodo}
               onClick={() => setMetodoPagamento(metodo)}
             >
               {metodo}
@@ -104,7 +104,7 @@ export default function FormularioLancamento({ onSubmitExito, onErroFreemium }) 
             <S.Chip
               key={tipo}
               type="button"
-              active={tipoGasto === tipo}
+              $active={tipoGasto === tipo}
               onClick={() => setTipoGasto(tipo)}
             >
               {tipo}

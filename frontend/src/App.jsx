@@ -5,6 +5,7 @@ import { Onboarding } from './components/Onboarding/Onboarding';
 import DashboardPotes from './components/Dashboard/DashboardPotes';
 import FormularioLancamento from './components/FormularioLancamento/FormularioLancamento';
 import { get } from './services/api';
+import ModalFreemium from './components/ModalFreemium/ModalFreemium';
 
 
 function App() {
@@ -14,6 +15,8 @@ function App() {
   const [configuracao, setConfiguracao] = useState({});
 
   const [gastos, setGastos] = useState({});
+
+  const [modalFreemiumAberto, setModalFreemiumAberto] = useState(false);
 
   const carregarDadosUsuario = async () => {
     const token = localStorage.getItem('@Poti:token'); // Pega o token que você salvou no Login
@@ -48,10 +51,6 @@ function App() {
     carregarDadosUsuario();
   }, []);
 
-  //useEffect(() => {
-  //  carregarDadosUsuario();
-  //}, []);
-
   // 1. TELA DE CARREGAMENTO (Splash Screen)
   if (telaAtiva === 'carregando') {
     return (
@@ -74,12 +73,12 @@ function App() {
       <div style={{ paddingBottom: '2rem' }}>
         <DashboardPotes configuracao={configuracao} gastos={gastos} />
         <FormularioLancamento 
-          onSubmitExito={() => {
-            // Lógica para recarregar ou atualizar os gastos na tela após um lançamento
-          }}
-          onErroFreemium={(mensagem) => {
-            alert(mensagem);
-          }}
+          onSubmitExito={carregarDadosUsuario}
+          onErroFreemium={() => setModalFreemiumAberto(true)}
+        />
+        <ModalFreemium
+          isOpen={modalFreemiumAberto} 
+          onClose={() => setModalFreemiumAberto(false)} 
         />
       </div>
     );

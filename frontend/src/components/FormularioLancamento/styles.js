@@ -54,15 +54,15 @@ export const Chip = styled.button`
   cursor: pointer;
   transition: all 0.2s ease;
   
-  background-color: ${props => props.active 
+  background-color: ${props => props.$active 
     ? props.theme.colors.TextoPrimario 
     : props.theme.colors.planoDeFundo
   };
-  color: ${props => props.active 
+  color: ${props => props.$active 
     ? props.theme.colors.branco 
     : props.theme.colors.TextoPrimario
   };
-  border: 1.5px solid ${props => props.active 
+  border: 1.5px solid ${props => props.$active 
     ? props.theme.colors.TextoPrimario 
     : props.theme.colors.cinza
   };

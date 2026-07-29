@@ -74,13 +74,13 @@ export const ProgressBarContainer = styled.div`
 `;
 
 export const ProgressBarFill = styled.div`
-  width: ${props => Math.min(props.percent, 100)}%;
+  width: ${props => Math.min(props.$percent, 100)}%;
   height: 100%;
   transition: width 0.4s ease-in-out, background-color 0.3s ease;
   
   background-color: ${props => {
-    if (props.percent >= 100) return props.theme.colors.perigo;
-    if (props.percent >= 80) return props.theme.colors.cuidado;
+    if (props.$percent >= 100) return props.theme.colors.perigo;
+    if (props.$percent >= 80) return props.theme.colors.cuidado;
     return props.theme.colors.sucesso;
   }};
 `;
@@ -90,8 +90,8 @@ export const PercentLabel = styled.span`
   font-weight: bold;
   align-self: flex-end;
   color: ${props => {
-    if (props.percent >= 100) return props.theme.colors.perigo;
-    if (props.percent >= 80) return props.theme.colors.cuidado;
+    if (props.$percent >= 100) return props.theme.colors.perigo;
+    if (props.$percent >= 80) return props.theme.colors.cuidado;
     return props.theme.colors.sucesso;
   }};
 `;

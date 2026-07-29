@@ -59,7 +59,7 @@ async function obterDashboard(req, res) {
 
         // Preencher os valores com o que veio da base de dados
         agrupamentoGastos.forEach((item) => {
-            gastos[item.tipo_gasto] = Number(item._sum.valor) || 0;
+            gastos[item.tipoGasto] = Number(item._sum.valor) || 0;
         });
 
         // Converter tipos decimais do Prisma para enviar no JSON

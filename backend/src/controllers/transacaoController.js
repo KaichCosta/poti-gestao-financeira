@@ -40,7 +40,28 @@ async function criar(req, res) {
     return res.status(500).json({ error: 'Erro ao registrar despesa.' });
   }
 }
+async function buscarTransacoes(req, res) {
+  try {
+    const usuarioId = req.usuarioId; 
+    const { mes, ano, pote, pagina, limite } = req.query;
+
+    const resultado = await transacaoService.listarHistorico({
+      usuarioId,
+      mes: mes ? Number(mes) : null,
+      ano: ano ? Number(ano) : null,
+      pote,
+      pagina,
+      limite
+    });
+
+    return res.status(200).json(resultado);
+  } catch (error) {
+    console.error("Erro ao buscar histórico:", error);
+    return res.status(500).json({ erro: "Erro interno ao buscar as transações." });
+  }
+};
 
 module.exports = {
-  criar
+  criar,
+  buscarTransacoes
 };

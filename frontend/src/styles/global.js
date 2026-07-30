@@ -15,6 +15,15 @@ const GlobalStyle = createGlobalStyle`
         overflow-x: hidden;
     }
 
+    #root {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto; 
+        min-height: 100vh;
+        position: relative;
+        padding: 0 1.25rem;
+    }
+
     button {
         cursor: pointer;
         border: none;

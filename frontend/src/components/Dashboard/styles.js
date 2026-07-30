@@ -3,11 +3,13 @@ import styled from 'styled-components';
 export const DashboardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   width: 100%;
-  max-width: 480px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 1rem;
+  /*margin: 0 1.25rem;*/
+  padding-top: 1.75rem;
+
 `;
 
 export const ResumoSaldoCard = styled.div`

@@ -6,16 +6,14 @@ import DashboardPotes from './components/Dashboard/DashboardPotes';
 import FormularioLancamento from './components/FormularioLancamento/FormularioLancamento';
 import { get } from './services/api';
 import ModalFreemium from './components/ModalFreemium/ModalFreemium';
-
+import Historico from './components/Historico/Historico';
+import MenuNavegacao from './components/MenuNavegacao/MenuNavegacao';
 
 function App() {
-  // O estado inicial agora é 'carregando' para evitar piscar a tela de login no F5
-  const[telaAtiva, setTelaAtiva] = useState('login')
-  // Estados vazios que serão preenchidos pelo MySQL
+  const[telaAtiva, setTelaAtiva] = useState('carregando')
+
   const [configuracao, setConfiguracao] = useState({});
-
   const [gastos, setGastos] = useState({});
-
   const [modalFreemiumAberto, setModalFreemiumAberto] = useState(false);
 
   const carregarDadosUsuario = async () => {
@@ -36,12 +34,10 @@ function App() {
         setGastos(resposta.gastos || {});
         setTelaAtiva('dashboard');
       } else {
-        // Se tem token mas a config voltou vazia, manda pro Onboarding
         setTelaAtiva('onboarding');
       }
     } catch (error) {
       console.error("Erro ao buscar dados do dashboard:", error);
-      // Se o token estiver expirado ou inválido, limpa e manda logar de novo
       localStorage.removeItem('@Poti:token');
       setTelaAtiva('login');
     }
@@ -68,29 +64,43 @@ function App() {
     return <Onboarding irParaDashboard={() => setTelaAtiva('dashboard')}/>;
   }
   
-  if (telaAtiva === 'dashboard') {
-    return (
-      <div style={{ paddingBottom: '2rem' }}>
-        <DashboardPotes configuracao={configuracao} gastos={gastos} />
-        <FormularioLancamento 
-          onSubmitExito={carregarDadosUsuario}
-          onErroFreemium={() => setModalFreemiumAberto(true)}
-        />
-        <ModalFreemium
-          isOpen={modalFreemiumAberto} 
-          onClose={() => setModalFreemiumAberto(false)} 
-        />
-      </div>
-    );
-  }
-
   return (
-    <Login
-      irParaCadastro={() => setTelaAtiva('cadastro')}
-      logadoComSucesso={carregarDadosUsuario}
-    />
+    <div style={{ paddingBottom: '80px', minHeight: '100vh' }}>
+      
+      {/* TELA DASHBOARD (Potes + Lançamento) */}
+      {telaAtiva === 'dashboard' && (
+        <>
+          <DashboardPotes configuracao={configuracao} gastos={gastos} />
+          <FormularioLancamento 
+            onSubmitExito={carregarDadosUsuario}
+            onErroFreemium={() => setModalFreemiumAberto(true)}
+          />
+          <ModalFreemium
+            isOpen={modalFreemiumAberto} 
+            onClose={() => setModalFreemiumAberto(false)} 
+          />
+        </>
+      )}
+
+      {/* TELA HISTÓRICO / EXTRATO */}
+      {telaAtiva === 'historico' && (
+        <Historico />
+      )}
+
+      {/* TELA DE CONFIGURAÇÕES / AJUSTES */}
+      {telaAtiva === 'configuracoes' && (
+        <Onboarding irParaDashboard={() => setTelaAtiva('dashboard')} />
+      )}
+
+      {/* RODAPÉ FIXO COM BOTTOM NAVIGATION BAR */}
+      <MenuNavegacao 
+        telaAtiva={telaAtiva} 
+        setTelaAtiva={setTelaAtiva} 
+      />
+
+    </div>
   );
-};
+}
 
 export default App;
 

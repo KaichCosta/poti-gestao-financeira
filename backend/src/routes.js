@@ -24,4 +24,6 @@ routes.post('/transacoes', verificarJWT, validaLimiteFreemium, transacaoControll
 
 routes.get('/dashboard', verificarJWT, dashboardController.obterDashboard)
 
+routes.get('/transacoes', verificarJWT, transacaoController.buscarTransacoes);
+
 module.exports = routes;

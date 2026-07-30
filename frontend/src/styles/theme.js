@@ -1,7 +1,7 @@
 const theme = {
     colors: {
         planoDeFundo: "#E0FFEC", // verde Claro (Fundo Principal Light Mode)
-        TextoPrimario: "#040626", // Verde Escuro Profundo (Textos, Títulos e Estrutura)
+        TextoPrimario: "#04261E", // Verde Escuro Profundo (Textos, Títulos e Estrutura)
 
         // Potes e Status Semânticos
         sucesso: "#084A24", // Verde Gnomo (Pote Investimentos / Saudável)

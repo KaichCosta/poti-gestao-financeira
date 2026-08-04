@@ -3,12 +3,14 @@ const authService = require('../services/authService')
 async function register(req, res) {
     try {
         const { email,senha} = req.body
-        // Validação básica de presença de dados
         if (!email || !senha) {
-            return res.status(400).json({error: 'Email e senha são obrigatórios' })
+            return res.status(400).json({erro: 'Email e senha são obrigatórios' })
         }
 
-        // Delega a criação e criptografia para a camada de serviço
+        if (senha.length < 6 || senha.length > 10) {
+            return res.status(400).json({ erro: 'A senha deve ter entre 6 e 10 caracteres.' });
+        }
+
         const novoUsuario = await authService.criarUsuario(email, senha);
 
         return res.status(201).json({
@@ -21,11 +23,11 @@ async function register(req, res) {
         });
     } catch (error) {
         if (error.message === 'EMAIL_ALREADY_EXISTS') {
-            return res.status(409).json({error: 'Este e-mail já está cadastrado no sistema.'})
+            return res.status(409).json({erro: 'Este e-mail já está cadastrado no sistema.'})
         }
 
         console.error('Erro no registro:', error);
-        return res.status(500).json({ error: 'Erro interno do servidor ao registrar usuário.' });
+        return res.status(500).json({ erro: 'Erro interno do servidor ao registrar usuário.' });
     }
 }
 
@@ -34,7 +36,7 @@ async function login(req, res) {
         const { email, senha } = req.body;
         
         if (!email || !senha) {
-            return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+            return res.status(400).json({ erro: 'Email e senha são obrigatórios' });
         }
         
         const dadosAutenticados = await authService.autenticarUsuario(email, senha);
@@ -42,11 +44,11 @@ async function login(req, res) {
         return res.status(200).json(dadosAutenticados)
     } catch (error) {
         if (error.message === 'INVALID_CREDENTIALS') {
-            return res.status(401).json({ error: 'E-mail ou senha incorretos.' });
+            return res.status(401).json({ erro: 'E-mail ou senha incorretos.' });
         }
 
         console.error('Erro no login:', error);
-        return res.status(500).json({ error: 'Erro interno do servidor ao realizar login.' });
+        return res.status(500).json({ erro: 'Erro interno do servidor ao realizar login.' });
     }
 }
 

@@ -136,3 +136,13 @@ export const LinkAlternativo = styled.p`
     }
   }
 `;
+
+export const MensagemErro = styled.span`
+  color: ${props => props.theme.colors?.perigo || '#E7390D'}; // Vermelho Terracota
+  font-size: 0.85rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  display: block;
+  text-align: left;
+  width: 100%;
+`;

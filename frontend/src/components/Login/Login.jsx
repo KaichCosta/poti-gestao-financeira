@@ -7,12 +7,39 @@ export default function Login({ irParaCadastro, logadoComSucesso }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState('');
+  const [erroEmail, setErroEmail] = useState('');
+  const [erroSenha, setErroSenha] = useState('');
+
+  const validarEmail = (valor) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(valor)) {
+      setErroEmail('Por favor, insira um e-mail válido (ex: seu@email.com)');
+      return false;
+    }
+    setErroEmail('');
+    return true;
+  };
+
+  const validarSenha = (valor) => {
+    if (valor.length < 6) {
+      setErroSenha('A senha deve ter no mínimo 6 caracteres.');
+      return false;
+    }
+    setErroSenha('');
+    return true;
+  };
 
   const lidarComLogin = async(e) => {
     e.preventDefault();
+
+    const isEmailValido = validarEmail(email);
+    const isSenhaValida = validarSenha(senha);
+
+    if (!isEmailValido || !isSenhaValida) {
+      return; 
+    }
     setErro('');
     try {
-      // 2. Usando a sua função 'post' injetada do seu service/api de forma limpa:
       const resposta = await post('/login', { email, senha });   
       
       // 3. No seu service estruturado, a resposta já costuma devolver os dados direto (.data)
@@ -47,10 +74,15 @@ export default function Login({ irParaCadastro, logadoComSucesso }) {
                 type="email" 
                 placeholder="seu@email.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (erroEmail) setErroEmail('');
+                }}
+                onBlur={() => validarEmail(e.target.value)}
                 required
               />
             </C.InputContainer>
+            {erroEmail && <C.MensagemErro>{erroEmail}</C.MensagemErro>}
           </C.InputGrupo>
 
           <C.InputGrupo>
@@ -59,14 +91,19 @@ export default function Login({ irParaCadastro, logadoComSucesso }) {
               <Lock size={20} />
               <C.InputReal 
                 type="password" 
-                placeholder="••••••••"
+                placeholder="Sua Senha"
                 value={senha}
-                onChange={(e) => setSenha(e.target.value)}
+                onChange={(e) => {
+                  setSenha(e.target.value);
+                  if (erroSenha) setErroSenha('');
+                }}
+                onBlur={(e) => validarSenha(e.target.value)}
                 required
               />
             </C.InputContainer>
+            {erroSenha && <C.MensagemErro>{erroSenha}</C.MensagemErro>}
           </C.InputGrupo>
-
+          {erro && <C.MensagemErro style={{ textAlign: 'center', fontSize: '1rem', marginBottom: '15px' }}>{erro}</C.MensagemErro>}        
           <C.BotaoEnviar type="submit">
             Entrar <LogIn size={18} />
           </C.BotaoEnviar>

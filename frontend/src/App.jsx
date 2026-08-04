@@ -56,6 +56,10 @@ function App() {
     );
   }
 
+  if (telaAtiva === 'login') {
+    return (<Login irParaCadastro={() => setTelaAtiva('cadastro')} onLoginSucesso={carregarDadosUsuario} />);
+  }
+
   if (telaAtiva === 'cadastro') {
     return <Cadastro irParaLogin={() => setTelaAtiva('login')} />
   }

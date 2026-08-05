@@ -95,6 +95,22 @@ export const InputReal = styled.input`
   }
 `;
 
+export const BotaoOlho = styled.button`
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #04261E; /* Nossa cor Verde Escuro Profundo */
+  opacity: 0.6;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
 export const BotaoEnviar = styled.button`
   display: flex;
   justify-content: center;
@@ -134,4 +150,11 @@ export const LinkAlternativo = styled.p`
       text-decoration: underline;
     }
   }
+`;
+
+export const MensagemErro = styled.span`
+  color: #E7390D;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
 `;

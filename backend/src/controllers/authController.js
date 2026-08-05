@@ -7,8 +7,11 @@ async function register(req, res) {
             return res.status(400).json({erro: 'Email e senha são obrigatórios' })
         }
 
-        if (senha.length < 6 || senha.length > 10) {
-            return res.status(400).json({ erro: 'A senha deve ter entre 6 e 10 caracteres.' });
+        const senhaRegex = /^(?=.*[A-Z])(?=.*\d).{6,50}$/;
+        if (!senhaRegex.test(senha)) {
+            return res.status(400).json({ 
+                erro: 'A senha deve ter no mínimo 6 caracteres, contendo pelo menos 1 letra maiúscula e 1 número.' 
+            });
         }
 
         const novoUsuario = await authService.criarUsuario(email, senha);

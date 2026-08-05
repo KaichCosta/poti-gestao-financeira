@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Mail, Lock, LogIn } from "lucide-react";
+import { Mail, Lock, LogIn, Eye, EyeOff } from "lucide-react";
 import * as C from "./styles";
 import { post } from '../../services/api';
+import toast from 'react-hot-toast';
 
-export default function Login({ irParaCadastro, logadoComSucesso }) {
+export default function Login({ irParaCadastro, onLoginSucesso }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState('');
   const [erroEmail, setErroEmail] = useState('');
   const [erroSenha, setErroSenha] = useState('');
+  const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const validarEmail = (valor) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,6 +34,8 @@ export default function Login({ irParaCadastro, logadoComSucesso }) {
   const lidarComLogin = async(e) => {
     e.preventDefault();
 
+    const emailLimpo = email.trim().toLowerCase();
+
     const isEmailValido = validarEmail(email);
     const isSenhaValida = validarSenha(senha);
 
@@ -40,21 +44,22 @@ export default function Login({ irParaCadastro, logadoComSucesso }) {
     }
     setErro('');
     try {
-      const resposta = await post('/login', { email, senha });   
+      const resposta = await post('/login', { email: emailLimpo, senha });   
       
-      // 3. No seu service estruturado, a resposta já costuma devolver os dados direto (.data)
       localStorage.setItem('@Poti:token', resposta.token);
       localStorage.setItem('@Poti:usuario', JSON.stringify(resposta.usuario));
 
-      alert(`Bem-vindo, ${resposta.usuario.email}! Login efetuado.`);
+      toast.success(`Bem-vindo, ${resposta.usuario.email}! Login efetuado.`);
       
-      // 4. Dispara a mudança de estado para o App.js abrir o Onboarding
-      if (logadoComSucesso) {
-        logadoComSucesso();
-      }
+      setTimeout(() => {
+        if (onLoginSucesso) {
+          onLoginSucesso();
+        }
+      }, 1200);
     } catch (err) {
-      // Pega a mensagem tratada do backend ou o fallback de erro de rede
-      setErro(err.response?.data?.erro || err.message);
+      const mensagemErro = err.response?.data?.erro || 'Erro ao conectar. Tente novamente.';
+      setErro(mensagemErro);
+      toast.error(mensagemErro);
     }
   };
 
@@ -79,6 +84,9 @@ export default function Login({ irParaCadastro, logadoComSucesso }) {
                   if (erroEmail) setErroEmail('');
                 }}
                 onBlur={() => validarEmail(e.target.value)}
+                autoComplete="email"
+                autoCapitalize="none"
+                autoCorrect="off"
                 required
               />
             </C.InputContainer>
@@ -90,7 +98,7 @@ export default function Login({ irParaCadastro, logadoComSucesso }) {
             <C.InputContainer>
               <Lock size={20} />
               <C.InputReal 
-                type="password" 
+                type={mostrarSenha ? "text" : "password"} 
                 placeholder="Sua Senha"
                 value={senha}
                 onChange={(e) => {
@@ -100,6 +108,14 @@ export default function Login({ irParaCadastro, logadoComSucesso }) {
                 onBlur={(e) => validarSenha(e.target.value)}
                 required
               />
+
+              <C.BotaoOlho 
+                type="button" /* IMPORTANTE: previne que o form seja enviado ao clicar no olho */
+                onClick={() => setMostrarSenha(!mostrarSenha)}
+              >
+                {mostrarSenha ? <EyeOff size={20} /> : <Eye size={20} />}
+              </C.BotaoOlho>
+
             </C.InputContainer>
             {erroSenha && <C.MensagemErro>{erroSenha}</C.MensagemErro>}
           </C.InputGrupo>

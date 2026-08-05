@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Login from "./components/Login/Login";
 import Cadastro from "./components/Cadastro/Cadastro";
+import { Toaster } from 'react-hot-toast';
 import { Onboarding } from './components/Onboarding/Onboarding';
 import DashboardPotes from './components/Dashboard/DashboardPotes';
 import FormularioLancamento from './components/FormularioLancamento/FormularioLancamento';
@@ -47,64 +48,74 @@ function App() {
     carregarDadosUsuario();
   }, []);
 
-  // 1. TELA DE CARREGAMENTO (Splash Screen)
-  if (telaAtiva === 'carregando') {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#E0FFEC', color: '#04261E', fontWeight: 'bold' }}>
-        <p>Carregando seu Poti... 🫙</p>
-      </div>
-    );
-  }
-
-  if (telaAtiva === 'login') {
-    return (<Login irParaCadastro={() => setTelaAtiva('cadastro')} onLoginSucesso={carregarDadosUsuario} />);
-  }
-
-  if (telaAtiva === 'cadastro') {
-    return <Cadastro irParaLogin={() => setTelaAtiva('login')} />
-  }
-
-  if (telaAtiva === 'onboarding') {
-    return <Onboarding irParaDashboard={() => setTelaAtiva('dashboard')}/>;
-  }
-  
   return (
-    <div style={{ paddingBottom: '80px', minHeight: '100vh' }}>
-      
-      {/* TELA DASHBOARD (Potes + Lançamento) */}
-      {telaAtiva === 'dashboard' && (
-        <>
-          <DashboardPotes configuracao={configuracao} gastos={gastos} />
-          <FormularioLancamento 
-            onSubmitExito={carregarDadosUsuario}
-            onErroFreemium={() => setModalFreemiumAberto(true)}
-          />
-          <ModalFreemium
-            isOpen={modalFreemiumAberto} 
-            onClose={() => setModalFreemiumAberto(false)} 
-          />
-        </>
-      )}
-
-      {/* TELA HISTÓRICO / EXTRATO */}
-      {telaAtiva === 'historico' && (
-        <Historico />
-      )}
-
-      {/* TELA DE CONFIGURAÇÕES / AJUSTES */}
-      {telaAtiva === 'configuracoes' && (
-        <Onboarding irParaDashboard={() => setTelaAtiva('dashboard')} />
-      )}
-
-      {/* RODAPÉ FIXO COM BOTTOM NAVIGATION BAR */}
-      <MenuNavegacao 
-        telaAtiva={telaAtiva} 
-        setTelaAtiva={setTelaAtiva} 
+    <>
+      {/* 1. O TOASTER FICA NO TOPO DE TUDO! SEMPRE RENDERIZADO */}
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: '#E0FFEC',
+            color: '#04261E',
+            fontWeight: '600',
+            border: '1px solid #084A24',
+          },
+          success: {
+            iconTheme: { primary: '#084A24', secondary: '#E0FFEC' },
+          },
+          error: {
+            iconTheme: { primary: '#E7390D', secondary: '#E0FFEC' },
+          },
+        }}
       />
 
-    </div>
+      {telaAtiva === 'carregando' && (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#E0FFEC', color: '#04261E', fontWeight: 'bold' }}>
+          <p>Carregando seu Poti... 🫙</p>
+        </div>
+      )}
+
+      {telaAtiva === 'login' && (
+        <Login irParaCadastro={() => setTelaAtiva('cadastro')} onLoginSucesso={carregarDadosUsuario} />
+      )}
+
+      {telaAtiva === 'cadastro' && (
+        <Cadastro irParaLogin={() => setTelaAtiva('login')} />
+      )}
+
+      {telaAtiva === 'onboarding' && (
+        <Onboarding irParaDashboard={() => setTelaAtiva('dashboard')}/>
+      )}
+
+      {/* 3. ÁREA LOGADA (Dashboard, Histórico, Config) */}
+      {['dashboard', 'historico', 'configuracoes'].includes(telaAtiva) && (
+        <div style={{ paddingBottom: '80px', minHeight: '100vh' }}>
+          
+          {telaAtiva === 'dashboard' && (
+            <>
+              <DashboardPotes configuracao={configuracao} gastos={gastos} />
+              <FormularioLancamento 
+                onSubmitExito={carregarDadosUsuario}
+                onErroFreemium={() => setModalFreemiumAberto(true)}
+              />
+              <ModalFreemium
+                isOpen={modalFreemiumAberto} 
+                onClose={() => setModalFreemiumAberto(false)} 
+              />
+            </>
+          )}
+
+          {telaAtiva === 'historico' && <Historico />}
+
+          {telaAtiva === 'configuracoes' && (
+            <Onboarding irParaDashboard={() => setTelaAtiva('dashboard')} />
+          )}
+
+          <MenuNavegacao telaAtiva={telaAtiva} setTelaAtiva={setTelaAtiva} />
+        </div>
+      )}
+    </>
   );
 }
 
 export default App;
-

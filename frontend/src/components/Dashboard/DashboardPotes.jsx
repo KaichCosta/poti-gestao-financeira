@@ -1,5 +1,6 @@
 import React from 'react';
 import * as S from './styles';
+import { POTES_UI } from '../../config/potesConfig';
 
 export default function DashboardPotes({ configuracao, gastos }) {
 
@@ -37,7 +38,12 @@ export default function DashboardPotes({ configuracao, gastos }) {
       {/* Pote 1: Gastos Fixos */}
       <S.PoteCard>
         <S.PoteHeader>
-          <span className="titulo">Gastos Fixos</span>
+          <S.GrupoTitulo>
+            <S.IconeWrapper $corPote={POTES_UI.fixos.cor}>
+              {POTES_UI.fixos.icone}
+            </S.IconeWrapper>
+            <span className="titulo">{POTES_UI.fixos.nome}</span>
+          </S.GrupoTitulo>
           <span className="valores">
             {formatarMoeda(gastoFixos)} de <span>{formatarMoeda(tetoFixos)}</span>
           </span>
@@ -51,7 +57,12 @@ export default function DashboardPotes({ configuracao, gastos }) {
       {/* Pote 2: Não Essenciais */}
       <S.PoteCard>
         <S.PoteHeader>
-          <span className="titulo">Não Essenciais</span>
+          <S.GrupoTitulo>
+            <S.IconeWrapper $corPote={POTES_UI.nao_essenciais.cor}>
+              {POTES_UI.nao_essenciais.icone}
+            </S.IconeWrapper>
+            <span className="titulo">{POTES_UI.nao_essenciais.nome}</span>
+          </S.GrupoTitulo>
           <span className="valores">
             {formatarMoeda(gastoNaoEssenc)} de <span>{formatarMoeda(tetoNaoEssenc)}</span>
           </span>
@@ -65,7 +76,12 @@ export default function DashboardPotes({ configuracao, gastos }) {
       {/* Pote 3: Investimentos */}
       <S.PoteCard>
         <S.PoteHeader>
-          <span className="titulo">Investimentos</span>
+          <S.GrupoTitulo>
+            <S.IconeWrapper $corPote={POTES_UI.investimentos.cor}>
+              {POTES_UI.investimentos.icone}
+            </S.IconeWrapper>
+            <span className="titulo">{POTES_UI.investimentos.nome}</span>
+          </S.GrupoTitulo>
           <span className="valores">
             {formatarMoeda(gastoInvest)} de <span>{formatarMoeda(tetoInvest)}</span>
           </span>

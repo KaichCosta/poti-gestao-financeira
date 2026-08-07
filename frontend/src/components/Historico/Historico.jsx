@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as C from "./styles";
 import { get } from '../../services/api';
+import { POTES_UI } from '../../config/potesConfig';
 
 const Historico = () => {
   const [transacoes, setTransacoes] = useState([]);
@@ -50,6 +51,15 @@ const Historico = () => {
     if (paginacao.paginaAtual > 1) {
       setPaginacao((prev) => ({ ...prev, paginaAtual: prev.paginaAtual - 1 }));
     }
+  };
+
+  // Dicionário para traduzir o texto do Back-end para a chave do nosso Front-end
+  const mapearTipoGasto = (tipoDoBanco) => {
+    if (tipoDoBanco === "Não Essencial") return "nao_essenciais";
+    if (tipoDoBanco === "Gasto Fixo" || tipoDoBanco === "Fixos") return "fixos";
+    if (tipoDoBanco === "Investimento" || tipoDoBanco === "Investimentos") return "investimentos";
+    
+    return "fixos"; // Fallback (segurança) caso venha algo inesperado
   };
 
   return (
@@ -102,17 +112,37 @@ const Historico = () => {
             Nenhuma transação encontrada neste período. 🫙
           </p>
         ) : (
-          transacoes.map((t) => (
-            <C.CardTransacao key={t.id} $pote={t.pote}>
-              <C.InfoTransacao>
-                <strong>{t.descricao}</strong>
-                <span>{new Date(t.data).toLocaleDateString("pt-BR")}</span>
-              </C.InfoTransacao>
-              <C.ValorTransacao>
-                R$ {Number(t.valor).toFixed(2).replace(".", ",")}
-              </C.ValorTransacao>
-            </C.CardTransacao>
-          ))
+          transacoes.map((t) => {
+            // 1. Pegamos no valor exato que veio do Back-end (ex: "Não Essencial")
+            const tipoOriginal = t.tipoGasto; 
+
+            // 2. Traduzimos para a chave técnica (ex: "nao_essenciais")
+            const chaveDoPote = mapearTipoGasto(tipoOriginal);
+            
+            // 3. Puxamos a cor e o ícone do nosso ficheiro central
+            const poteAtual = POTES_UI[chaveDoPote]; 
+
+            return (
+              <C.CardTransacao key={t.id} $pote={chaveDoPote}>
+                
+                <C.GrupoTitulo>
+                  <C.IconeWrapper $corPote={poteAtual?.cor || '#04261E'}>
+                    {poteAtual?.icone}
+                  </C.IconeWrapper>
+
+                  <C.InfoTransacao>
+                    <strong>{t.descricao}</strong>
+                    <span>{new Date(t.data).toLocaleDateString("pt-BR")} {poteAtual?.nome ? `- ${poteAtual.nome}` : ''}</span>
+                  </C.InfoTransacao>
+                </C.GrupoTitulo>
+
+                <C.ValorTransacao>
+                  R$ {Number(t.valor).toFixed(2).replace(".", ",")}
+                </C.ValorTransacao>
+                
+              </C.CardTransacao>
+            )
+          })
         )}
       </C.ListaTransacoes>
 

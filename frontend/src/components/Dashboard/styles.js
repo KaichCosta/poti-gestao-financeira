@@ -66,6 +66,23 @@ export const PoteHeader = styled.div`
   }
 `;
 
+export const GrupoTitulo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const IconeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: ${(props) => props.$corPote}26; 
+  color: ${(props) => props.$corPote};
+`;
+
 export const ProgressBarContainer = styled.div`
   width: 100%;
   height: 20px;

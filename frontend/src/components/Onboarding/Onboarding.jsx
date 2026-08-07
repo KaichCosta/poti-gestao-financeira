@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { post } from '../../services/api';
 import * as C from './styles';
+import toast from 'react-hot-toast';
 
 export function Onboarding({ irParaDashboard }) {
   const [passo, setPasso] = useState(1);
@@ -35,13 +36,20 @@ export function Onboarding({ irParaDashboard }) {
         diaResetOrcamento: Number(diaResetOrcamento)
     
       });
-      alert('Configurações ativadas com sucesso! 🫙');
+      toast.success('Configurações ativadas com sucesso! 🫙');
+
+      setTimeout(() => {
+        if (irParaDashboard) {
+          irParaDashboard();
+        }
+      }, 1200);
 
       if (irParaDashboard) {
         irParaDashboard();
       }
     } catch (error) {
-      alert(error.response?.data?.erro || 'Erro interno ao salvar suas configurações.');
+      const mensagemErro = error.message || 'Erro interno ao salvar suas configurações.';
+      toast.error(mensagemErro);
     } finally {
       setCarregando(false);
     }

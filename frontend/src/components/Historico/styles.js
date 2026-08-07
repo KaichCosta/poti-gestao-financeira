@@ -58,6 +58,24 @@ export const CardTransacao = styled.div`
     }};
 `;
 
+export const GrupoTitulo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const IconeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: ${(props) => props.$corPote}26; 
+  color: ${(props) => props.$corPote};
+  flex-shrink: 0;
+`;
+
 export const InfoTransacao = styled.div`
   display: flex;
   flex-direction: column;

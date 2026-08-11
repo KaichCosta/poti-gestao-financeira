@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import * as S from './styles';
 import { post } from '../../services/api';
+import toast from 'react-hot-toast';
 
 export default function FormularioLancamento({ onSubmitExito, onErroFreemium }) {
   const [descricao, setDescricao] = useState('');
@@ -16,7 +17,7 @@ export default function FormularioLancamento({ onSubmitExito, onErroFreemium }) 
     e.preventDefault();
 
     if (!descricao || !valor) {
-      alert('Preencha a descrição e o valor da despesa.');
+      toast.error('Preencha a descrição e o valor da despesa.');
       return;
     }
 
@@ -32,7 +33,7 @@ export default function FormularioLancamento({ onSubmitExito, onErroFreemium }) 
       const dataJson = await post('/transacoes', payload);
 
       // Sucesso no cadastro
-      alert(dataJson.message || 'Lançamento salvo com sucesso!');
+      toast.success(dataJson.message || 'Lançamento salvo com sucesso!');
       setDescricao('');
       setValor('');
       
@@ -44,7 +45,7 @@ export default function FormularioLancamento({ onSubmitExito, onErroFreemium }) 
       if (err.message === 'limite_atingido') {
         onErroFreemium('Você atingiu o limite de 30 lançamentos gratuitos deste mês. Desbloqueie lançamentos ilimitados no plano PRO!');
       } else {
-        alert(err.message || 'Houve um erro ao salvar o lançamento.');
+        toast.error(err.message || 'Houve um erro ao salvar o lançamento.');
       }
     }
   };

@@ -8,7 +8,7 @@ export const POTES_UI = {
     cor: "#E7390D" //
   },
   nao_essenciais: {
-    nome: "Estilo de Vida",
+    nome: "Não Essenciais",
     icone: <MdShoppingBag size={24} />,
     cor: "#F26716" //
   },

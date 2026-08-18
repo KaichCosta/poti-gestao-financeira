@@ -22,8 +22,8 @@ const MenuNavegacao = ({ telaAtiva, setTelaAtiva }) => {
       </C.NavItem>
 
       <C.NavItem
-        $ativo={telaAtiva === "configuracoes"}
-        onClick={() => setTelaAtiva("configuracoes")}
+        $ativo={telaAtiva === "ajustes"}
+        onClick={() => setTelaAtiva("ajustes")}
       >
         <FiSettings />
         <span>Ajustes</span>

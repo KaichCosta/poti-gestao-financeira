@@ -2,14 +2,14 @@ import React from 'react';
 import * as S from './styles';
 import { POTES_UI } from '../../config/potesConfig';
 
-export default function DashboardPotes({ configuracao, gastos }) {
+export default function DashboardPotes({ ajustes, gastos }) {
 
-  const receita = Number(configuracao.receitaMensal || 0);
+  const receita = Number(ajustes.receitaMensal || 0);
 
   // Tetos máximos calculados em moedas
-  const tetoFixos = receita * (configuracao.porcentagemFixos / 100);
-  const tetoNaoEssenc = receita * (configuracao.porcentagemNaoEssenc / 100);
-  const tetoInvest = receita * (configuracao.porcentagemInvest / 100);
+  const tetoFixos = receita * (ajustes.porcentagemFixos / 100);
+  const tetoNaoEssenc = receita * (ajustes.porcentagemNaoEssenc / 100);
+  const tetoInvest = receita * (ajustes.porcentagemInvest / 100);
 
   // Gastos atuais por pote
   const gastoFixos = Number(gastos.Fixo || 0);

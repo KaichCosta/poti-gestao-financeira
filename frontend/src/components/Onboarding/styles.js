@@ -69,14 +69,14 @@ export const Input = styled.input`
   width: 100%;
   padding: 14px 16px;
   font-size: 16px;
-  border: 2px solid ${props => props.borderColor || 'rgba(4, 38, 30, 0.15)'};
+  border: 2px solid ${props => props.$borderColor || 'rgba(4, 38, 30, 0.15)'};
   border-radius: 8px;
   background-color: #FFFFFF;
   color: ${props => props.theme.colors.textoPrimario || '#04261E'};
   transition: border-color 0.2s ease-in-out;
 
   &:focus {
-    border-color: ${props => props.borderColor || props.theme.colors.textoPrimario || '#04261E'};
+    border-color: ${props => props.$borderColor || props.theme.colors.textoPrimario || '#04261E'};
   }
 
   /* Remove setas padrões do input number */
@@ -119,7 +119,7 @@ export const BadgeValidacao = styled.div`
   font-weight: 600;
   text-align: center;
   margin-bottom: 16px;
-  background-color: ${props => props.isValid ? 'rgba(8, 74, 36, 0.1)' : 'rgba(231, 57, 13, 0.1)'};
-  color: ${props => props.isValid ? '#084A24' : '#E7390D'};
+  background-color: ${props => props.$isValid ? 'rgba(8, 74, 36, 0.1)' : 'rgba(231, 57, 13, 0.1)'};
+  color: ${props => props.$isValid ? '#084A24' : '#E7390D'};
 `;
 

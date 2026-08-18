@@ -91,7 +91,10 @@ function App() {
       )}
 
       {telaAtiva === 'onboarding' && (
-        <Onboarding irParaDashboard={() => setTelaAtiva('dashboard')}/>
+        <Onboarding irParaDashboard={() => setTelaAtiva('dashboard')}
+          configuracaoAtual={configuracao}
+          aoSalvar={carregarDadosUsuario}
+        />
       )}  
 
       {/* 3. ÁREA LOGADA (Dashboard, Histórico, Ajustes) */}
@@ -115,7 +118,10 @@ function App() {
           {telaAtiva === 'historico' && <Historico />}
 
           {telaAtiva === 'ajustes' && (
-            <Ajustes onLogout={lidarComLogout} />
+            <Ajustes
+              onLogout={lidarComLogout}
+              onEditarOrcamento={() => setTelaAtiva('onboarding')}
+            />
           )}
 
           <MenuNavegacao telaAtiva={telaAtiva} setTelaAtiva={setTelaAtiva} />

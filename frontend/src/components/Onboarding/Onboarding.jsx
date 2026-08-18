@@ -3,7 +3,9 @@ import { post } from '../../services/api';
 import * as C from './styles';
 import toast from 'react-hot-toast';
 
-export function Onboarding({ irParaDashboard }) {
+export function Onboarding({ irParaDashboard, configuracaoAtual, aoSalvar }) {
+  const isModoEdicao = configuracaoAtual && configuracaoAtual.receitaMensal;
+
   const [passo, setPasso] = useState(1);
   const [receitaMensal, setReceitaMensal] = useState('');
   const [porcentagemFixos, setPorcentagemFixos] = useState(50);
@@ -11,6 +13,15 @@ export function Onboarding({ irParaDashboard }) {
   const [porcentagemInvest, setPorcentagemInvest] = useState(20);
   const [diaResetOrcamento, setDiaResetOrcamento] = useState(5);
   const [carregando, setCarregando] = useState(false);
+
+  React.useEffect(() => {
+    if (isModoEdicao) {
+      setReceitaMensal(configuracaoAtual.receitaMensal);
+      setPorcentagemFixos(configuracaoAtual.porcentagemFixos);
+      setPorcentagemNaoEssenc(configuracaoAtual.porcentagemNaoEssenc);
+      setPorcentagemInvest(configuracaoAtual.porcentagemInvest);
+    }
+  }, [isModoEdicao, configuracaoAtual]);
 
   const somaDasPorcentagens = Number(porcentagemFixos) + Number(porcentagemNaoEssenc) + Number(porcentagemInvest);
   const totalEhValido = somaDasPorcentagens === 100;
@@ -25,9 +36,7 @@ export function Onboarding({ irParaDashboard }) {
     }
 
     setCarregando(true);
-    try {
-      const token = localStorage.getItem('@Poti:token');
-      
+    try {      
       await post('/configuracao', {
         receitaMensal: parseFloat(receitaMensal),
         porcentagemFixos: Number(porcentagemFixos),
@@ -36,16 +45,15 @@ export function Onboarding({ irParaDashboard }) {
         diaResetOrcamento: Number(diaResetOrcamento)
     
       });
-      toast.success('Configurações ativadas com sucesso! 🫙');
+      toast.success(isModoEdicao ? 'Orçamento atualizado com sucesso!' : 'Configurações ativadas com sucesso! 🫙');
 
-      setTimeout(() => {
-        if (irParaDashboard) {
-          irParaDashboard();
-        }
-      }, 1200);
-
-      if (irParaDashboard) {
-        irParaDashboard();
+      if (aoSalvar) {
+        await aoSalvar(); 
+        if (irParaDashboard) irParaDashboard();
+      } else {
+        setTimeout(() => {
+          if (irParaDashboard) irParaDashboard();
+        }, 1200);
       }
     } catch (error) {
       const mensagemErro = error.message || 'Erro interno ao salvar suas configurações.';
@@ -94,7 +102,7 @@ export function Onboarding({ irParaDashboard }) {
               <label color="#E7390D">Gastos Fixos (%)</label>
               <C.Input 
                 type="number" 
-                borderColor="#E7390D"
+                $borderColor="#E7390D"
                 min="0"
                 max="100"
                 value={porcentagemFixos}
@@ -106,7 +114,7 @@ export function Onboarding({ irParaDashboard }) {
               <label color="#F26716">Estilo de Vida (%)</label>
               <C.Input 
                 type="number" 
-                borderColor="#F26716"
+                $borderColor="#F26716"
                 min="0"
                 max="100"
                 value={porcentagemNaoEssenc}
@@ -118,7 +126,7 @@ export function Onboarding({ irParaDashboard }) {
               <label color="#084A24">Investimentos (%)</label>
               <C.Input 
                 type="number" 
-                borderColor="#084A24"
+                $borderColor="#084A24"
                 min="0"
                 max="100"
                 value={porcentagemInvest}
@@ -126,7 +134,7 @@ export function Onboarding({ irParaDashboard }) {
               />
             </C.Group>
 
-            <C.BadgeValidacao isValid={totalEhValido}>
+            <C.BadgeValidacao $isValid={totalEhValido}>
               Distribuição total: {somaDasPorcentagens}% {totalEhValido ? '✅' : '❌ (Ajuste para 100%)'}
             </C.BadgeValidacao>
 
@@ -151,7 +159,10 @@ export function Onboarding({ irParaDashboard }) {
               />
             </C.Group>
             <C.Button type="submit" disabled={carregando}>
-              {carregando ? 'Salvando...' : 'Ativar Meu Poti 🫙'}
+              {carregando
+                ? 'Salvando...'
+                : isModoEdicao ? 'Salvar Alterações' : 'Começar a Guardar'
+              }
             </C.Button>
           </>
         )}

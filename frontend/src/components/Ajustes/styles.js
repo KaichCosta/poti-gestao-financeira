@@ -16,6 +16,34 @@ export const Titulo = styled.h1`
   text-align: center;
 `;
 
+// Adicione no seu styles.js da pasta Ajustes
+
+export const BotaoProCallout = styled.button`
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #084A24 0%, #04261E 100%);
+  color: ${props => props.theme.colors.planoDeFundo};
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(4, 38, 30, 0.2);
+  margin-bottom: 12px;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(4, 38, 30, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+
 export const BotaoEditar = styled.button`
   width: 100%;
   height: 48px;
@@ -51,5 +79,24 @@ export const BotaoSair = styled.button`
 
   &:active {
     transform: scale(0.98);
+  }
+`;
+
+export const RodapeSobre = styled.div`
+  margin-top: 48px; /* Dá um respiro grande em relação aos botões */
+  padding-bottom: 24px;
+  text-align: center;
+  
+  color: ${props => props.theme.colors.sucesso};
+  opacity: 0.6;
+  font-size: 0.85rem;
+  line-height: 1.4;
+
+  p {
+    margin: 0;
+  }
+
+  strong {
+    font-weight: 600;
   }
 `;

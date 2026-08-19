@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Overlay = styled.div`
-  display: ${(props) => (props.$isOpen ? "flex" : "none")};
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;

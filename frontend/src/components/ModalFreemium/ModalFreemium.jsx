@@ -32,7 +32,6 @@ export default function ModalFreemium({ isOpen, onClose, isLimiteAtingido = true
           <li>✨ Lançamentos ilimitados todo mês</li>
           <li>📊 Histórico completo e exportação de dados</li>
           <li>🎯 Potes e metas personalizadas</li>
-          <li>✅ Suporte prioritário</li>
         </S.BeneficiosList>
 
         <S.BotaoPro onClick={lidarComUpgrade}>

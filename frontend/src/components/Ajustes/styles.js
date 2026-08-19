@@ -1,22 +1,77 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
-  min-height: 100vh;
+  padding: 1.5rem;
+  min-height: 100vh; 
 `;
 
 export const Titulo = styled.h1`
   color: ${(props) => props.theme.colors.textoPrimario || "#04261E"};
   font-size: 30px;
   margin-bottom: 20px;
-  text-align: center;
 `;
 
-// Adicione no seu styles.js da pasta Ajustes
+export const SectionTitle = styled.h2`
+  font-size: 0.85rem;
+  color: ${(props) => props.theme.colors.textoPrimario || "#04261E"};
+  opacity: 0.6;
+  margin-bottom: 8px;
+  margin-left: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+export const Card = styled.div`
+  background-color:  ${(props) => props.theme.colors.branco};
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(4, 38, 30, 0.04);
+`;
+
+export const ActionRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: transparent;
+  border-bottom: 1px solid rgba(4, 38, 30, 0.06);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: rgba(4, 38, 30, 0.02);
+  }
+
+  &:active {
+    background-color: rgba(4, 38, 30, 0.05);
+  }
+`;
+
+export const RowLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  /* Se for a zona de perigo, fica vermelho, senão verde escuro */
+  color: ${(props) => (props.$danger ? props.theme.colors.perigo || "#E7390D" : props.theme.colors.textoPrimario || "#04261E")};
+
+  svg {
+    opacity: ${(props) => (props.$danger ? 1 : 0.7)};
+  }
+`;
+
+export const RowRight = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${(props) => props.theme.colors.textoPrimario || "#04261E"};
+  opacity: 0.3; /* Deixa as setinhas discretas */
+`;
 
 export const BotaoProCallout = styled.button`
   width: 100%;
@@ -37,44 +92,6 @@ export const BotaoProCallout = styled.button`
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(4, 38, 30, 0.3);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-`;
-
-export const BotaoEditar = styled.button`
-  width: 100%;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: transparent;
-  color: ${props => props.theme.colors.sucesso};
-  border: 1px solid ${props => props.theme.colors.branco};
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-`;
-
-export const BotaoSair = styled.button`
-  width: 100%;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: transparent;
-  color: ${props => props.theme.colors.perigo};
-  border: 1px solid ${props => props.theme.colors.branco};
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  
-  &:hover {
-    background-color: rgba(231, 57, 13, 0.08);
   }
 
   &:active {

@@ -1,4 +1,5 @@
 import React, { useState} from 'react';
+const [carregando, setCarregando] = useState(false);
 import { Mail, Lock, ArrowRight, Eye, EyeOff} from 'lucide-react';
 import * as C from './styles'
 import { post } from '../../services/api';
@@ -42,6 +43,9 @@ export default function Cadastro({ irParaLogin }) {
       return;
     }
     try {
+      setCarregando(true);
+      setErro('');
+
       const resposta = await post('/register', {email, senha});
       toast.success(resposta.message || 'Conta criada com sucesso!');
       setTimeout(() => {
@@ -51,9 +55,10 @@ export default function Cadastro({ irParaLogin }) {
       }, 1200);
     } catch (err){
       const mensagemErro = err.message || 'Erro ao criar conta. Tente novamente.';
-        'Erro ao criar conta. Tente novamente.';
       setErro(mensagemErro);
       toast.error(mensagemErro);
+    } finally {
+    setCarregando(false);
     }
   };
   return (
@@ -114,8 +119,16 @@ export default function Cadastro({ irParaLogin }) {
             {erroSenha && <C.MensagemErro>{erroSenha}</C.MensagemErro>}
           </C.InputGrupo>
 
-          <C.BotaoEnviar type="submit">
-            Cadastrar <ArrowRight size={18} />
+          {erro && (
+            <C.MensagemErro style={{ textAlign: 'center', marginBottom: '15px', fontSize: '1rem' }}>
+              {erro}
+            </C.MensagemErro>
+          )}        
+
+          <C.BotaoEnviar type="submit" disabled={carregando}>
+            {carregando ? 'Cadastrando...' : (
+              <>Cadastrar <ArrowRight size={18} /></>
+            )}
           </C.BotaoEnviar>
         </C.Formulario>
 

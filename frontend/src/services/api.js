@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Função utilitária para centralizar as requisições POST do app.
 export async function post(endpoint, dados) {

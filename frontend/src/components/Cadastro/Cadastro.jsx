@@ -1,5 +1,4 @@
 import React, { useState} from 'react';
-const [carregando, setCarregando] = useState(false);
 import { Mail, Lock, ArrowRight, Eye, EyeOff} from 'lucide-react';
 import * as C from './styles'
 import { post } from '../../services/api';
@@ -12,6 +11,7 @@ export default function Cadastro({ irParaLogin }) {
   const [erroEmail, setErroEmail] = useState('');
   const [erroSenha, setErroSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [carregando, setCarregando] = useState(false);
 
   const validarEmail = (valor) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,6 +35,7 @@ export default function Cadastro({ irParaLogin }) {
 
   const lidarComCadastro = async (e) => {
     e.preventDefault();
+    const emailLimpo = email.trim().toLowerCase();
     const isEmailValido = validarEmail(email);
     const isSenhaValida = validarSenha(senha);
 
@@ -46,7 +47,7 @@ export default function Cadastro({ irParaLogin }) {
       setCarregando(true);
       setErro('');
 
-      const resposta = await post('/register', {email, senha});
+      const resposta = await post('/register', {emailLimpo, senha});
       toast.success(resposta.message || 'Conta criada com sucesso!');
       setTimeout(() => {
         if (irParaLogin) {

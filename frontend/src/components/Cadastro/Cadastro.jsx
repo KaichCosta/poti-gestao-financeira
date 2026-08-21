@@ -47,7 +47,7 @@ export default function Cadastro({ irParaLogin }) {
       setCarregando(true);
       setErro('');
 
-      const resposta = await post('/register', {emailLimpo, senha});
+      const resposta = await post('/register', {email: emailLimpo, senha: senha});
       toast.success(resposta.message || 'Conta criada com sucesso!');
       setTimeout(() => {
         if (irParaLogin) {

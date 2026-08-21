@@ -44,7 +44,7 @@ export default function Login({ irParaCadastro, onLoginSucesso }) {
     }
     setErro('');
     try {
-      const resposta = await post('/login', { email: emailLimpo, senha });   
+      const resposta = await post('/login', { email: emailLimpo, senha: senha });   
       
       localStorage.setItem('@Poti:token', resposta.token);
       localStorage.setItem('@Poti:usuario', JSON.stringify(resposta.usuario));

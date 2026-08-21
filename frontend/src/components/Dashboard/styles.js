@@ -85,7 +85,7 @@ export const IconeWrapper = styled.div`
 export const ProgressBarContainer = styled.div`
   width: 100%;
   height: 20px;
-  background-color: ${props => props.theme.colors.planoDeFundo};
+  background-color: ${props => props.theme.colors.cinza};
   border-radius: 10px;
   overflow: hidden;
   position: relative;

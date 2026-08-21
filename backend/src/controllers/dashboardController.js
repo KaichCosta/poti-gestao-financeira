@@ -44,9 +44,6 @@ async function obterDashboard(req, res) {
             },
             where: {
                 usuarioId: usuarioId,
-                data: {
-                    gte: dataInicioCiclo, // Apenas despesas do ciclo atual
-                },
             },
         });
 

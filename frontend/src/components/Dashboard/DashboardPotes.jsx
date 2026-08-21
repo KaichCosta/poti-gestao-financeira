@@ -12,9 +12,9 @@ export default function DashboardPotes({ ajustes, gastos }) {
   const tetoInvest = receita * (ajustes.porcentagemInvest / 100);
 
   // Gastos atuais por pote
-  const gastoFixos = Number(gastos.Fixo || 0);
-  const gastoNaoEssenc = Number(gastos["Não Essencial"] || 0);
-  const gastoInvest = Number(gastos.Investimento || 0);
+  const gastoFixos = Number(gastos?.Fixo || 0);
+  const gastoNaoEssenc = Number(gastos?.["Não Essencial"] || 0);
+  const gastoInvest = Number(gastos?.Investimento || 0);
 
   // Percentual de consumo de cada pote
   const pctFixos = tetoFixos > 0 ? (gastoFixos / tetoFixos) * 100 : 0;

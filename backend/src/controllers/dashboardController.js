@@ -44,6 +44,9 @@ async function obterDashboard(req, res) {
             },
             where: {
                 usuarioId: usuarioId,
+                data: {
+                    gte: dataInicioCiclo, // Apenas despesas do ciclo atual
+                },
             },
         });
 
@@ -56,7 +59,9 @@ async function obterDashboard(req, res) {
 
         // Preencher os valores com o que veio da base de dados
         agrupamentoGastos.forEach((item) => {
-            gastos[item.tipoGasto] = Number(item._sum.valor) || 0;
+            if (gastos[item.tipoGasto] !== undefined) {
+                gastos[item.tipoGasto] = Number(item._sum.valor) || 0;
+            }
         });
 
         // Converter tipos decimais do Prisma para enviar no JSON
@@ -66,7 +71,6 @@ async function obterDashboard(req, res) {
             porcentagemNaoEssenc: configuracao.porcentagemNaoEssenc,
             porcentagemInvest: configuracao.porcentagemInvest,
         };
-
         // 5. Retornar o pacote completo
         return res.status(200).json({
             configuracao: configuracaoFormatada,

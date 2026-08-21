@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-// Middleware para permitir que a API receba JSON no corpo das requisições
+
 app.use(express.json());
 
 // Vincula o arquivo principal de rotas

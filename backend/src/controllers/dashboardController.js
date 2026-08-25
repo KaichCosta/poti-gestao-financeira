@@ -44,13 +44,11 @@ async function obterDashboard(req, res) {
             },
             where: {
                 usuarioId: req.usuarioId,
-                //data: {
-                //    gte: dataInicioCiclo, // Apenas despesas do ciclo atual
-                //},
+                data: {
+                    gte: dataInicioCiclo,
+                },
             },
         });
-
-        console.log("🔍 AGRUPAMENTO DO BANCO:", agrupamentoGastos)
 
         // 4. Formatar os dados para o Frontend (inicializando tudo a zero)
         const gastos = {

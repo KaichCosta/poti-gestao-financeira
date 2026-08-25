@@ -44,11 +44,13 @@ async function obterDashboard(req, res) {
             },
             where: {
                 usuarioId: req.usuarioId,
-                data: {
-                    gte: dataInicioCiclo, // Apenas despesas do ciclo atual
-                },
+                //data: {
+                //    gte: dataInicioCiclo, // Apenas despesas do ciclo atual
+                //},
             },
         });
+
+        console.log("🔍 AGRUPAMENTO DO BANCO:", agrupamentoGastos)
 
         // 4. Formatar os dados para o Frontend (inicializando tudo a zero)
         const gastos = {
@@ -57,7 +59,6 @@ async function obterDashboard(req, res) {
             Investimento: 0,
         };
 
-        // Preencher os valores com o que veio da base de dados
         agrupamentoGastos.forEach((item) => {
             if (gastos[item.tipoGasto] !== undefined) {
                 gastos[item.tipoGasto] = Number(item._sum.valor) || 0;

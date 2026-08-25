@@ -39,6 +39,20 @@ async function obterDashboard(req, res) {
         console.log("Dia reset:", diaReset);
         console.log("Início ciclo:", dataInicioCiclo.toISOString());
         console.log("================================");
+
+        const transacoes = await prisma.transacao.findMany({
+            where: {
+                usuarioId: req.usuarioId,
+            },
+            select: {
+                id: true,
+                data: true,
+                valor: true,
+                tipoGasto: true,
+            },
+        });
+
+        console.log("Transações:", transacoes);
         // 3. Fazer o cálculo consolidado na Base de Dados (GROUP BY e SUM)
         const agrupamentoGastos = await prisma.transacao.groupBy({
             by: ["tipoGasto"],

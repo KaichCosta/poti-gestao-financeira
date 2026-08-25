@@ -20,22 +20,20 @@ async function obterDashboard(req, res) {
         const hoje = new Date();
         const diaReset = Number(configuracao?.diaResetOrcamento) || 1;
 
-        // Exemplo: se hoje é dia 15 e o reset é dia 5, o ciclo começou no dia 5 deste mês.
-        // Se hoje é dia 2 e o reset é dia 5, o ciclo começou no dia 5 do mês passado.
-        let dataInicioCiclo = new Date(
-            hoje.getFullYear(),
-            hoje.getMonth(),
-            diaReset,
-        );
+        let anoInicio = hoje.getFullYear();
+        let mesInicio = hoje.getMonth(); // 0 a 11
 
+        // Se hoje ainda não chegou no dia de reset deste mês, o ciclo começou no mês anterior
         if (hoje.getDate() < diaReset) {
-            dataInicioCiclo = new Date(
-                hoje.getFullYear(),
-                hoje.getMonth() - 1,
-                diaReset,
-            );
+        mesInicio -= 1;
+            if (mesInicio < 0) {
+                mesInicio = 11;
+                anoInicio -= 1;
+            }
         }
 
+        const dataInicioCiclo = new Date(anoInicio, mesInicio, diaReset, 0, 0, 0, 0);
+        
         // 3. Fazer o cálculo consolidado na Base de Dados (GROUP BY e SUM)
         const agrupamentoGastos = await prisma.transacao.groupBy({
             by: ["tipoGasto"],

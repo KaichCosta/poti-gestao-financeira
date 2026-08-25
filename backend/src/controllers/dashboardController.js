@@ -43,7 +43,7 @@ async function obterDashboard(req, res) {
                 valor: true,
             },
             where: {
-                usuarioId: usuarioId,
+                usuarioId: req.usuarioId,
                 data: {
                     gte: dataInicioCiclo, // Apenas despesas do ciclo atual
                 },

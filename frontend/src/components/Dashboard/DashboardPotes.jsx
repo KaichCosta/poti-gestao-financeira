@@ -2,30 +2,33 @@ import React from 'react';
 import * as S from './styles';
 import { POTES_UI } from '../../config/potesConfig';
 
-export default function DashboardPotes({ ajustes, gastos }) {
+export default function DashboardPotes({ ajustes = {}, gastos = {} }) {
+  // 1. Leitura defensiva com valores padrão
+  const receita = Number(ajustes?.receitaMensal || 0);
+  const pctFixosConfig = Number(ajustes?.porcentagemFixos || 0);
+  const pctNaoEssencConfig = Number(ajustes?.porcentagemNaoEssenc || 0);
+  const pctInvestConfig = Number(ajustes?.porcentagemInvest || 0);
 
-  const receita = Number(ajustes.receitaMensal || 0);
+  // 2. Tetos máximos calculados em moeda
+  const tetoFixos = receita * (pctFixosConfig / 100);
+  const tetoNaoEssenc = receita * (pctNaoEssencConfig / 100);
+  const tetoInvest = receita * (pctInvestConfig / 100);
 
-  // Tetos máximos calculados em moedas
-  const tetoFixos = receita * (ajustes.porcentagemFixos / 100);
-  const tetoNaoEssenc = receita * (ajustes.porcentagemNaoEssenc / 100);
-  const tetoInvest = receita * (ajustes.porcentagemInvest / 100);
-
-  // Gastos atuais por pote
+  // 3. Gastos atuais por pote
   const gastoFixos = Number(gastos?.Fixo || 0);
   const gastoNaoEssenc = Number(gastos?.["Não Essencial"] || 0);
   const gastoInvest = Number(gastos?.Investimento || 0);
 
-  // Percentual de consumo de cada pote
+  // 4. Percentual de consumo de cada pote (protegido contra divisão por zero)
   const pctFixos = tetoFixos > 0 ? (gastoFixos / tetoFixos) * 100 : 0;
   const pctNaoEssenc = tetoNaoEssenc > 0 ? (gastoNaoEssenc / tetoNaoEssenc) * 100 : 0;
   const pctInvest = tetoInvest > 0 ? (gastoInvest / tetoInvest) * 100 : 0;
 
-  // Cálculo do saldo disponível restante no mês
+  // 5. Saldo disponível restante no mês
   const saldoTotalRestante = receita - (gastoFixos + gastoNaoEssenc + gastoInvest);
 
   const formatarMoeda = (valor) => {
-    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
   return (

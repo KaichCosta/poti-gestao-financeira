@@ -18,7 +18,7 @@ async function obterDashboard(req, res) {
         }
 
         const hoje = new Date();
-        const diaReset = configuracao.diaResetOrcamento;
+        const diaReset = Number(configuracao?.diaResetOrcamento) || 1;
 
         // Exemplo: se hoje é dia 15 e o reset é dia 5, o ciclo começou no dia 5 deste mês.
         // Se hoje é dia 2 e o reset é dia 5, o ciclo começou no dia 5 do mês passado.

@@ -33,7 +33,12 @@ async function obterDashboard(req, res) {
         }
 
         const dataInicioCiclo = new Date(anoInicio, mesInicio, diaReset, 0, 0, 0, 0);
-        
+
+        console.log("================================");
+        console.log("Hoje:", hoje.toISOString());
+        console.log("Dia reset:", diaReset);
+        console.log("Início ciclo:", dataInicioCiclo.toISOString());
+        console.log("================================");
         // 3. Fazer o cálculo consolidado na Base de Dados (GROUP BY e SUM)
         const agrupamentoGastos = await prisma.transacao.groupBy({
             by: ["tipoGasto"],
